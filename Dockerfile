@@ -94,8 +94,8 @@ RUN set -eux; apk add --no-cache --virtual .composer-rundeps \
 RUN apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing git-secret
 
 # Install ansible.
-RUN pip3 install --upgrade pip \
-  && pip3 install ansible==2.10.6 awscli botocore boto3 s3cmd python-magic
+RUN pip install --upgrade pip \
+  && pip install ansible==2.10.6 awscli botocore boto3 s3cmd python-magic
 
 # Install ansistrano.
 RUN ansible-galaxy install ansistrano.deploy ansistrano.rollback
