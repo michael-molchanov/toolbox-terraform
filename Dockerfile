@@ -18,7 +18,7 @@ RUN set -eux; apk add --no-cache --virtual .composer-rundeps \
   ca-certificates \
   && rm -rf /var/lib/apt/lists/*
 
-FROM python:3-alpine
+FROM python:2-alpine
 
 LABEL maintainer "Michael Molchanov <mmolchanov@adyax.com>"
 
