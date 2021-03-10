@@ -100,6 +100,36 @@ RUN pip3 install --upgrade pip \
 # Install ansistrano.
 RUN ansible-galaxy install ansistrano.deploy ansistrano.rollback
 
+ENV HOME /root
+ENV NVM_DIR $HOME/.nvm
+
+# Profile
+RUN echo 'export NVM_DIR="$HOME/.nvm"' >> "$HOME/.bashrc"
+RUN echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> "$HOME/.bashrc"
+RUN echo '[ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion" # This loads nvm bash_completion' >> "$HOME/.bashrc"
+
+RUN mkdir -p $NVM_DIR
+
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
+
+RUN source $NVM_DIR/nvm.sh \
+  && source $NVM_DIR/nvm.sh \
+  && nvm install -s v10.23.3 \
+  && nvm alias default v10.23.3 \
+  && nvm use --delete-prefix default
+
+ENV PATH $HOME/.yarn/bin:$HOME/.nvm/versions/node/v10.23.3/bin:$PATH
+
+RUN source $NVM_DIR/nvm.sh \
+  && npm install -g gulp-cli grunt-cli bower \
+  && curl -o- -L https://yarnpkg.com/install.sh | bash \
+  && node --version \
+  && npm --version \
+  && grunt --version \
+  && gulp --version \
+  && bower --version \
+  && yarn versions
+
 # Install terraform.
 ENV TERRAFORM_VERSION 0.12.18
 RUN curl https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -o terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
